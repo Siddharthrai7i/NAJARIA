@@ -1,0 +1,334 @@
+<%- layout('boilerplate.ejs') %>
+
+    <div class="post-detail-container">
+        <div class="back-nav">
+            <a href="/villages/<%= posts.village._id %>/posts" class="back-btn">
+                <span>←</span> Back to Village Posts
+            </a>
+        </div>
+        <% if (!isMember) { %>
+            <div class="visitor-notice">
+                <span>👁️</span>
+                <div>
+                    <strong>Viewing as a visitor</strong>
+                    <p>You can read posts and comments, but cannot interact. Join <%= posts.village.name %> to
+                            participate!</p>
+                </div>
+            </div>
+            <% } %>
+
+                <div class="post-card">
+                    <div class="post-header">
+                        <h1 class="post-title">
+                            <%= posts.title %>
+                        </h1>
+
+                        <div class="post-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">👤</span>
+                                <span><strong>
+                                        <%= posts.author.fullName %>
+                                    </strong></span>
+                                <span class="meta-username">@<%= posts.author.username %></span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-icon">📧</span>
+                                <span>
+                                    <%= posts.author.email %>
+                                </span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-icon">🏘️</span>
+                                <span>
+                                    <%= posts.village.name %>
+                                </span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-icon">📅</span>
+                                <span>
+                                    <%= new Date(posts.createdAt).toLocaleDateString('en-IN', { year: 'numeric' ,
+                                        month: 'long' , day: 'numeric' }) %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-content">
+                        <p>
+                            <%= posts.content %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <h2>💬 Comments (<%= posts.comments.length %>)</h2>
+                    </div>
+
+                    <% if (!isMember) { %>
+                        <div class="comment-restriction-notice">
+                            <p>🔒 Only village members can add comments. Join <%= posts.village.name %> to participate in
+                                    discussions!</p>
+                        </div>
+                        <% } %>
+
+                            <div class="comments-list">
+                                <% if (posts.comments && posts.comments.length> 0) { %>
+                                    <% posts.comments.forEach(function(comment) { %>
+                                        <div class="comment-card">
+                                            <div class="comment-header">
+                                                <div class="comment-author">
+                                                    <div class="author-avatar">
+                                                        <%= comment.user.fullName.charAt(0).toUpperCase() %>
+                                                    </div>
+                                                    <div class="author-info">
+                                                        <h4>
+                                                            <%= comment.user.fullName %>
+                                                        </h4>
+                                                        <span class="author-username">@<%= comment.user.username %>
+                                                                </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="comment-content">
+                                                <p>
+                                                    <%= comment.content %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                            <% } else { %>
+                                                <div class="no-comments">
+                                                    <p>💭 No comments yet.</p>
+                                                </div>
+                                                <% } %>
+                            </div>
+                </div>
+    </div>
+
+    <style>
+        .post-detail-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-nav {
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .visitor-notice {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .visitor-notice span {
+            font-size: 2rem;
+        }
+
+        .visitor-notice strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .visitor-notice p {
+            margin: 0;
+            opacity: 0.95;
+            font-size: 0.95rem;
+        }
+
+        .post-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .post-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .post-title {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .post-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: #718096;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+
+        .meta-icon {
+            font-size: 16px;
+        }
+
+        .meta-username {
+            color: #667eea;
+        }
+
+        .post-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #4a5568;
+        }
+
+        .comments-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .comments-header h2 {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 25px;
+        }
+
+        .comment-restriction-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .comment-restriction-notice p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .comment-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .comment-header {
+            margin-bottom: 12px;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            font-size: 16px;
+            color: #2d3748;
+            margin-bottom: 2px;
+        }
+
+        .author-username {
+            font-size: 14px;
+            color: #667eea;
+        }
+
+        .comment-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #4a5568;
+            margin: 0;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 40px;
+            color: #a0aec0;
+        }
+
+        .no-comments p {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .post-detail-container {
+                padding: 15px;
+            }
+
+            .post-card {
+                padding: 25px;
+            }
+
+            .post-title {
+                font-size: 24px;
+            }
+
+            .post-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .comments-section {
+                padding: 20px;
+            }
+        }
+    </style>

@@ -1,0 +1,395 @@
+<%- layout('boilerplate.ejs') %>
+
+    <div class="village-container">
+        <!-- Village Header -->
+        <div class="village-header">
+            <div class="village-icon">🏘️</div>
+            <div class="village-info">
+                <h1 class="village-name">
+                    <%= village.name %>
+                </h1>
+                <p class="village-description">
+                    <%= village.description %>
+                </p>
+                <div class="village-meta">
+                    <span class="member-count">👥 <%= members.length %> Members</span>
+                    <% if (village.lagion) { %>
+                        <span class="lagion-info">👑 Lagion: <%= village.lagion.fullName %></span>
+                        <% } else { %>
+                            <span class="lagion-info">👑 No Lagion appointed</span>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Village Stats -->
+        <div class="village-stats">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <h3>
+                        <%= members.length %>
+                    </h3>
+                    <p>Total Members</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-info">
+                    <h3>Active</h3>
+                    <p>Community Status</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-info">
+                    <h3>Growing</h3>
+                    <p>Village Growth</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Members List -->
+        <div class="members-section">
+            <h2 class="section-title">Village Members</h2>
+
+            <% if (members.length===0) { %>
+                <div class="no-members">
+                    <p>No members in this village yet.</p>
+                </div>
+                <% } else { %>
+                    <div class="members-grid">
+                        <% members.forEach(member=> { %>
+                            <div class="member-card">
+                                <div class="member-avatar">
+                                    <%= member.fullName.charAt(0).toUpperCase() %>
+                                </div>
+                                <div class="member-details">
+                                    <h3 class="member-name">
+                                        <%= member.fullName %>
+                                    </h3>
+                                    <p class="member-username">@<%= member.username %>
+                                    </p>
+                                    <p class="member-email">📧 <%= member.email %>
+                                    </p>
+                                    <p class="member-phone">📱 <%= member.phoneNumber %>
+                                    </p>
+                                    <div class="member-footer">
+                                        <span class="member-joined">
+                                            Joined: <%= new Date(member.createdAt).toLocaleDateString() %>
+                                        </span>
+                                        <% if (village.lagion && member._id.equals(village.lagion._id)) { %>
+                                            <span class="lagion-badge">👑 Lagion</span>
+                                            <% } %>
+                                                <% if (member._id.equals(currentUser._id)) { %>
+                                                    <span class="you-badge">You</span>
+                                                    <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                    <% } %>
+        </div>
+        <!-- Existing village info ke baad ye section add karo -->
+        
+        <div class="posts-section" style="margin-top: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2><i class="fas fa-newspaper"></i> Village Posts</h2>
+                <a href="/post/new" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create Post
+                </a>
+            </div>
+        
+            <% if (posts && posts.length> 0) { %>
+                <% posts.forEach(post=> { %>
+                    <div class="post-card"
+                        style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div class="post-header"
+                            style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
+                            <h3 style="margin: 0 0 10px 0;">
+                                <%= post.title %>
+                            </h3>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: #666; font-size: 0.9rem;">
+                                    <i class="fas fa-user"></i>
+                                    <%= post.author.fullName || post.author.username %> •
+                                        <i class="fas fa-clock"></i>
+                                        <%= post.createdAt.toLocaleDateString() %>
+                                </span>
+                                <% if (currentUser._id.toString()===post.author._id.toString()) { %>
+                                    <form action="/posts/<%= post._id %>?_method=DELETE" method="POST"
+                                        style="display: inline;">
+                                        <button type="submit"
+                                            style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                    <% } %>
+                            </div>
+                        </div>
+        
+                        <div class="post-content" style="margin-bottom: 20px;">
+                            <p style="white-space: pre-wrap;">
+                                <%= post.content %>
+                            </p>
+                        </div>
+        
+                        <!-- Comments Section -->
+                        <div class="comments-section">
+                            <h4 style="margin-bottom: 15px;">
+                                <i class="fas fa-comments"></i> Comments (<%= post.comments.length %>)
+                            </h4>
+        
+                            <% if (post.comments.length> 0) { %>
+                                <div class="comments-list" style="margin-bottom: 20px;">
+                                    <% post.comments.forEach(comment=> { %>
+                                        <div class="comment"
+                                            style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                                            <strong>
+                                                <%= comment.user.fullName || comment.user.username %>:
+                                            </strong>
+                                            <p style="margin: 5px 0 0 0;">
+                                                <%= comment.content %>
+                                            </p>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                                <% } %>
+        
+                                    <!-- Add Comment Form -->
+                                    <form action="/posts/<%= post._id %>/comment" method="POST"
+                                        style="display: flex; gap: 10px;">
+                                        <input type="text" name="content" placeholder="Add a comment..." required
+                                            style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                                        <button type="submit"
+                                            style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                                            <i class="fas fa-paper-plane"></i> Comment
+                                        </button>
+                                    </form>
+                        </div>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <p style="text-align: center; color: #999; padding: 40px;">
+                                <i class="fas fa-inbox" style="font-size: 3rem; display: block; margin-bottom: 10px;"></i>
+                                No posts yet. Be the first to post!
+                            </p>
+                            <% } %>
+        </div>
+    </div>
+
+    <style>
+        .village-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .village-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .village-icon {
+            font-size: 5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .village-info {
+            flex: 1;
+        }
+
+        .village-name {
+            font-size: 2.5rem;
+            margin: 0 0 1rem 0;
+            font-weight: 700;
+        }
+
+        .village-description {
+            font-size: 1.1rem;
+            margin: 0 0 1rem 0;
+            opacity: 0.95;
+        }
+
+        .village-meta {
+            display: flex;
+            gap: 2rem;
+            font-size: 1rem;
+        }
+
+        .village-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-info h3 {
+            font-size: 2rem;
+            margin: 0;
+            color: #333;
+        }
+
+        .stat-info p {
+            margin: 0.5rem 0 0 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .members-section {
+            margin-top: 3rem;
+        }
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-title::before {
+            content: '👥';
+            font-size: 2rem;
+        }
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .member-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            border-color: #667eea;
+        }
+        .member-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .member-details h3 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+            font-size: 1.3rem;
+        }
+
+        .member-username {
+            color: #667eea;
+            margin: 0 0 0.8rem 0;
+            font-weight: 600;
+        }
+
+        .member-email,
+        .member-phone {
+            margin: 0.4rem 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .member-footer {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .member-joined {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .lagion-badge,
+        .you-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .lagion-badge {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white;
+        }
+
+        .you-badge {
+            background: #667eea;
+            color: white;
+        }
+
+        .no-members {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 15px;
+            color: #666;
+        }
+        @media (max-width: 768px) {
+            .village-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem;
+            }
+            .village-name {
+                font-size: 2rem;
+            }
+            .village-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>

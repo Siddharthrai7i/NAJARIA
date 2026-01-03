@@ -1,0 +1,23 @@
+<% layout('boilerplate.ejs') -%>
+
+    <link rel="stylesheet" href="/css/error.css">
+
+    <div class="error-page">
+        <div class="error-container">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="error-message">
+                <%= typeof message !=='undefined' ? message : 'The page you are looking for does not exist.' %>
+            </div>
+
+            <div class="error-actions">
+                <a href="/" class="btn-primary-custom">
+                    <i class="fas fa-home"></i> Go Back to Home
+                </a>
+                <a href="javascript:history.back()" class="btn-secondary-custom">
+                    <i class="fas fa-arrow-left"></i> Go Back
+                </a>
+            </div>
+        </div>
+    </div>

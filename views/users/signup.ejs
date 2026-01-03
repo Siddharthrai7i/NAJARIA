@@ -1,0 +1,113 @@
+<% layout('boilerplate.ejs') -%>
+
+    <link rel="stylesheet" href="/css/auth.css">
+
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-card register-card">
+                <div class="auth-header">
+                    <h1 class="auth-title">Join Our Community</h1>
+                    <p class="auth-subtitle">Create your village community account</p>
+                </div>
+
+                <form action="/signup" method="POST" class="auth-form">
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">
+                            <i class="fas fa-user"></i> Full Name
+                        </label>
+                        <input type="text" id="fullName" name="fullName" class="form-control"
+                            placeholder="Enter your full name" required>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username" class="form-label">
+                            <i class="fas fa-user-circle"></i> Username
+                        </label>
+                        <input type="text" id="username" name="username" class="form-control"
+                            placeholder="Choose a username" required>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email"
+                            required>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="form-group">
+                        <label for="phoneNumber" class="form-label">
+                            <i class="fas fa-phone"></i> Phone Number
+                        </label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control"
+                            placeholder="Enter your phone number" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <!-- Village Selection -->
+                    <div class="form-group">
+                        <label for="village" class="form-label">
+                            <i class="fas fa-map-marker-alt"></i> Select Village
+                        </label>
+                        <select id="village" name="village" class="form-control" required>
+                            <option value="">-- Select Your Village --</option>
+                            <!-- Villages will be populated dynamically -->
+                            <% if (typeof villages !=='undefined' && villages.length> 0) { %>
+                                <% villages.forEach(function(village) { %>
+                                    <option value="<%= village._id %>">
+                                        <%= village.name %>, <%= village.district %>
+                                    </option>
+                                    <% }); %>
+                                        <% } %>
+                        </select>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="Create a password" minlength="6" required>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">
+                            <i class="fas fa-lock"></i> Confirm Password
+                        </label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                            placeholder="Confirm your password" minlength="6" required>
+                    </div>
+                    <!-- Terms & Conditions -->
+                    <div class="form-group">
+                        <div class="terms-checkbox">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms">
+                                I agree to the <a href="/terms" target="_blank">Terms & Conditions</a> and <a
+                                    href="/privacy" target="_blank">Privacy Policy</a>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-auth-primary">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Sign In Link -->
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="/login" class="auth-link">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>

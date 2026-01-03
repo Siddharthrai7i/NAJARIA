@@ -1,0 +1,379 @@
+<div class="post-show-container">
+    <div class="back-nav">
+        <a href="/village/posts" class="back-btn">
+            <span>←</span> Back to All Posts
+        </a>
+    </div>
+    <div class="post-card">
+        <div class="post-header">
+            <h1 class="post-title">
+                <%= post.title %>
+            </h1>
+
+            <div class="post-meta">
+                <div class="meta-item">
+                    <span class="meta-icon">👤</span>
+                    <span><strong>
+                            <%= post.author.fullName %>
+                        </strong></span>
+                    <span class="meta-username">@<%= post.author.username %></span>
+                </div>
+
+                <div class="meta-item">
+                    <span class="meta-icon">📧</span>
+                    <span>
+                        <%= post.author.email %>
+                    </span>
+                </div>
+
+                <div class="meta-item">
+                    <span class="meta-icon">🏘️</span>
+                    <span>
+                        <%= post.village.name %>
+                    </span>
+                </div>
+
+                <div class="meta-item">
+                    <span class="meta-icon">📅</span>
+                    <span>
+                        <%= new Date(post.createdAt).toLocaleDateString('en-IN', { year: 'numeric' , month: 'long' ,
+                            day: 'numeric' }) %>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Content -->
+        <div class="post-content">
+            <p>
+                <%= post.content %>
+            </p>
+        </div>
+
+        <!-- Post Actions (Delete button) -->
+        <% if (currentUser && post.author._id.toString()===currentUser._id.toString()) { %>
+            <div class="post-actions">
+                <form action="/posts/<%= post._id %>?_method=DELETE" method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete this post?');">
+                    <button type="submit" class="btn-delete">
+                        🗑️ Delete Post
+                    </button>
+                </form>
+            </div>
+            <% } %>
+    </div>
+    <div class="comments-section">
+        <div class="comments-header">
+            <h2>💬 Comments (<%= post.comments.length %>)</h2>
+        </div>
+        <div class="add-comment-card">
+            <h3>Add Your Comment</h3>
+            <form action="/posts/<%= post._id %>/comment" method="POST" class="comment-form">
+                <textarea name="content" placeholder="Write your comment here..." rows="4" required
+                    class="comment-textarea"></textarea>
+                <button type="submit" class="btn-submit">
+                    ✉️ Post Comment
+                </button>
+            </form>
+        </div>
+
+        <!-- Comments List -->
+        <div class="comments-list">
+            <% if (post.comments && post.comments.length> 0) { %>
+                <% post.comments.forEach(function(comment) { %>
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <div class="author-avatar">
+                                    <%= comment.user.fullName.charAt(0).toUpperCase() %>
+                                </div>
+                                <div class="author-info">
+                                    <h4>
+                                        <%= comment.user.fullName %>
+                                    </h4>
+                                    <span class="author-username">@<%= comment.user.username %></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            <p>
+                                <%= comment.content %>
+                            </p>
+                        </div>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <div class="no-comments">
+                                <p>💭 No comments yet. Be the first to comment!</p>
+                            </div>
+                            <% } %>
+        </div>
+    </div>
+</div>
+
+<style>
+    .post-show-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .back-nav {
+        margin-bottom: 20px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: white;
+        color: #667eea;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-btn:hover {
+        background: #667eea;
+        color: white;
+        transform: translateX(-5px);
+    }
+
+    .post-card {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+
+    .post-header {
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
+    }
+
+    .post-title {
+        font-size: 32px;
+        color: #2d3748;
+        margin-bottom: 20px;
+        line-height: 1.3;
+    }
+
+    .post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        color: #718096;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+    }
+
+    .meta-icon {
+        font-size: 16px;
+    }
+
+    .meta-username {
+        color: #667eea;
+    }
+
+    .post-content {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #4a5568;
+        margin-bottom: 25px;
+    }
+
+    .post-actions {
+        padding-top: 20px;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .btn-delete {
+        background: #f56565;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-delete:hover {
+        background: #e53e3e;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+    }
+
+    .comments-section {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .comments-header h2 {
+        font-size: 24px;
+        color: #2d3748;
+        margin-bottom: 25px;
+    }
+
+    .add-comment-card {
+        background: #f7fafc;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+
+    .add-comment-card h3 {
+        font-size: 18px;
+        color: #2d3748;
+        margin-bottom: 15px;
+    }
+
+    .comment-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .comment-textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: inherit;
+        resize: vertical;
+        transition: border-color 0.3s;
+    }
+
+    .comment-textarea:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .btn-submit {
+        align-self: flex-start;
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+        background: #5568d3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .comment-card {
+        background: #f7fafc;
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+    }
+
+    .comment-header {
+        margin-bottom: 12px;
+    }
+
+    .comment-author {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .author-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .author-info h4 {
+        font-size: 16px;
+        color: #2d3748;
+        margin-bottom: 2px;
+    }
+
+    .author-username {
+        font-size: 14px;
+        color: #667eea;
+    }
+
+    .comment-content p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #4a5568;
+        margin: 0;
+    }
+
+    .no-comments {
+        text-align: center;
+        padding: 40px;
+        color: #a0aec0;
+    }
+
+    .no-comments p {
+        font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+        .post-show-container {
+            padding: 15px;
+        }
+
+        .post-card {
+            padding: 25px;
+        }
+
+        .post-title {
+            font-size: 24px;
+        }
+
+        .post-meta {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .post-content {
+            font-size: 16px;
+        }
+
+        .comments-section {
+            padding: 20px;
+        }
+
+        .add-comment-card {
+            padding: 20px;
+        }
+    }
+</style>

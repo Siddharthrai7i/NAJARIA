@@ -1,0 +1,261 @@
+/* ========================================
+   Auth Pages Styles (Login & Register)
+   File: public/css/auth.css
+   ======================================== */
+
+.auth-page {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.5s ease-out;
+}
+
+.register-card {
+    max-width: 500px;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    font-size: 1rem;
+    color: #7f8c8d;
+}
+
+/* Form */
+.auth-form {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.form-label i {
+    color: #667eea;
+    margin-right: 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-control::placeholder {
+    color: #bdc3c7;
+}
+
+/* Form Options */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.remember-me input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.remember-me label {
+    cursor: pointer;
+    color: #34495e;
+}
+
+.forgot-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+/* Terms Checkbox */
+.terms-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.terms-checkbox label {
+    font-size: 0.9rem;
+    color: #34495e;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.terms-checkbox a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.terms-checkbox a:hover {
+    text-decoration: underline;
+}
+
+/* Submit Button */
+.btn-auth-primary {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-auth-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-auth-primary:active {
+    transform: translateY(0);
+}
+
+/* Divider */
+.auth-divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e0e0e0;
+}
+
+.auth-divider span {
+    position: relative;
+    background: white;
+    padding: 0 15px;
+    color: #95a5a6;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Footer */
+.auth-footer {
+    text-align: center;
+}
+
+.auth-footer p {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+.auth-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .auth-page {
+        padding: 20px 15px;
+    }
+
+    .auth-card {
+        padding: 30px 20px;
+    }
+
+    .auth-title {
+        font-size: 1.6rem;
+    }
+
+    .auth-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

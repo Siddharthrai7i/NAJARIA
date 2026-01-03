@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Village Community Platform - Connect, Discuss, and Resolve">
+    <meta name="keywords" content="village, community, discussion, announcements, conflict resolution">
+    <meta name="author" content="Village Community">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Page Title -->
+    <title>
+        <%= typeof title !=='undefined' ? title : 'Village Community Platform' %>
+    </title>
+
+    <!-- Additional CSS (if needed per page) -->
+    <% if (typeof additionalCSS !=='undefined' ) { %>
+        <% additionalCSS.forEach(function(css) { %>
+            <link rel="stylesheet" href="<%= css %>">
+            <% }); %>
+                <% } %>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <%- include('includes/navbar.ejs') %>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Flash Messages (for success/error notifications) -->
+            <% if (typeof success !=='undefined' && success && success.length> 0) { %>
+                <div class="alert alert-success">
+                    <span class="alert-icon">✅</span>
+                    <span class="alert-message">
+                        <%= success %>
+                    </span>
+                    <button class="alert-close" onclick="this.parentElement.remove()">✖</button>
+                </div>
+                <% } %>
+
+                    <% if (typeof error !=='undefined' && error && error.length> 0) { %>
+                        <div class="alert alert-error">
+                            <span class="alert-icon">❌</span>
+                            <span class="alert-message">
+                                <%= error %>
+                            </span>
+                            <button class="alert-close" onclick="this.parentElement.remove()">✖</button>
+                        </div>
+                        <% } %>
+
+                            <% if (typeof warning !=='undefined' && warning && warning.length> 0) { %>
+                                <div class="alert alert-warning">
+                                    <span class="alert-icon">⚠️</span>
+                                    <span class="alert-message">
+                                        <%= warning %>
+                                    </span>
+                                    <button class="alert-close" onclick="this.parentElement.remove()">✖</button>
+                                </div>
+                                <% } %>
+
+                                    <!-- Page Content Placeholder -->
+                                    <%- body %>
+        </main>
+
+        <!-- Footer -->
+        <%- include('includes/footer.ejs') %>
+
+            <!-- JavaScript Files -->
+            <script src="/js/main.js"></script>
+
+            <!-- Additional JS (if needed per page) -->
+            <% if (typeof additionalJS !=='undefined' ) { %>
+                <% additionalJS.forEach(function(js) { %>
+                    <script src="<%= js %>"></script>
+                    <% }); %>
+                        <% } %>
+
+                            <!-- Inline Scripts -->
+                           
+</body>
+
+</html>

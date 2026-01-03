@@ -1,0 +1,116 @@
+<% layout('boilerplate.ejs') -%>
+
+    <style>
+        .post-form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea.form-control {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 15px;
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+
+    <div class="post-form-container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1><i class="fas fa-pen"></i> Create New Post</h1>
+                <p>Share something with <%= village.name %>
+                </p>
+            </div>
+
+            <form action="/posts" method="POST">
+                <div class="form-group">
+                    <label for="title" class="form-label">
+                        <i class="fas fa-heading"></i> Title
+                    </label>
+                    <input type="text" id="title" name="title" class="form-control" placeholder="Enter post title"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="content" class="form-label">
+                        <i class="fas fa-align-left"></i> Content
+                    </label>
+                    <textarea id="content" name="content" class="form-control"
+                        placeholder="Write your post content here..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Post
+                </button>
+
+                <a href="/villages/all" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Village
+                </a>
+            </form>
+        </div>
+    </div>

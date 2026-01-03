@@ -1,0 +1,250 @@
+<div class="inbox-container">
+    <div class="inbox-header">
+        <h1 class="inbox-title">
+            <span class="title-icon">💬</span>
+            Messages
+        </h1>
+        <a href="/villages/all" class="btn-back">← Back</a>
+    </div>
+    <% if (conversations.length===0  ) { %>
+        <div class="empty-inbox">
+            <div class="empty-icon">📭</div>
+            <h2>No messages yet</h2>
+            <p>Start a conversation by visiting your village members</p>
+            <a href="/villages/<%= currentUser.village %>/details" class="btn-primary">
+                View Village Members
+            </a>
+        </div>
+        <% } else { %>
+            <a href="/villages/<%= currentUser.village %>/details" class="btn-primary">
+                View Village Members
+            </a>
+            <div class="conversations-list">
+                <% conversations.forEach(function(conv) { %>
+                    <% const otherUser=conv.participants.find(p=>
+                        p._id.toString() !== currentUser._id.toString()
+                        );
+                        %>
+                        <a href="/messages/chat/<%= otherUser._id %>"
+                            class="conversation-item <%= conv.unreadCount > 0 ? 'unread' : '' %>">
+                            <div class="conversation-avatar">
+                                <%= otherUser.fullName.charAt(0).toUpperCase() %>
+                            </div>
+                            <div class="conversation-details">
+                                <div class="conversation-header">
+                                    <h3 class="conversation-name">
+                                        <%= otherUser.fullName %>
+                                    </h3>
+                                    <span class="conversation-time">
+                                        <%= new Date(conv.lastMessageAt).toLocaleTimeString('en-US', { hour: '2-digit' ,
+                                            minute: '2-digit' }) %>
+                                    </span>
+                                </div>
+                                <div class="conversation-footer">
+                                    <p class="conversation-preview">
+                                        <%= conv.lastMessage || 'No messages yet' %>
+                                    </p>
+                                    <% if (conv.unreadCount> 0) { %>
+                                        <span class="unread-badge">
+                                            <%= conv.unreadCount %>
+                                        </span>
+                                        <% } %>
+                                </div>
+                            <span class="conversation-village">📍 <%= conv.village.name %></span>
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
+        <% } %>
+</div>
+<style>
+    .inbox-container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .inbox-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .inbox-title {
+        font-size: 2em;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .title-icon {
+        font-size: 1.2em;
+    }
+
+    .btn-back {
+        padding: 10px 20px;
+        background: #f5f5f5;
+        color: #333;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background: #e0e0e0;
+    }
+
+    .empty-inbox {
+        text-align: center;
+        padding: 80px 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .empty-icon {
+        font-size: 5em;
+        margin-bottom: 20px;
+    }
+
+    .empty-inbox h2 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .empty-inbox p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .conversations-list {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .conversation-item {
+        display: flex;
+        gap: 15px;
+        padding: 20px;
+        border-bottom: 1px solid #f0f0f0;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .conversation-item:hover {
+        background: #f9f9f9;
+    }
+
+    .conversation-item.unread {
+        background: #f0f4ff;
+    }
+
+    .conversation-item:last-child {
+        border-bottom: none;
+    }
+
+    .conversation-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .conversation-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .conversation-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .conversation-name {
+        font-size: 1.1em;
+        color: #333;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .conversation-time {
+        font-size: 0.85em;
+        color: #999;
+    }
+
+    .conversation-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .conversation-preview {
+        color: #666;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+    }
+
+    .unread-badge {
+        background: #667eea;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8em;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+
+    .conversation-village {
+        font-size: 0.85em;
+        color: #999;
+    }
+
+    @media (max-width: 768px) {
+        .inbox-header {
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .conversation-avatar {
+            width: 50px;
+            height: 50px;
+            font-size: 1.2em;
+        }
+    }
+</style>

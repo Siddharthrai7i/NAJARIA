@@ -1,0 +1,309 @@
+<%- layout('boilerplate.ejs') %>
+
+    <div class="all-villages-container">
+        <div class="page-header">
+            <h1>🏘️ All Villages</h1>
+            <p>Explore different village communities</p>
+        </div>
+
+        <div class="villages-grid">
+            <% villagesWithData.forEach(function(data) { %>
+                <div class="village-card">
+                    <div class="village-card-header">
+                        <div class="village-icon">🏘️</div>
+                        <div class="village-title">
+                            <h2>
+                                <%= data.village.name %>
+                            </h2>
+                            <p class="village-desc">
+                                <%= data.village.description %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="village-stats">
+                        <div class="stat">
+                            <span class="stat-icon">👥</span>
+                            <span class="stat-value">
+                                <%= data.userCount %>
+                            </span>
+                            <span class="stat-label">Members</span>
+                        </div>
+                        <% if (data.village.lagion) { %>
+                            <div class="stat">
+                                <span class="stat-icon">👑</span>
+                                <span class="stat-value">
+                                    <%= data.village.lagion.fullName %>
+                                </span>
+                                <span class="stat-label">Lagion</span>
+                            </div>
+                            <% } %>
+                    </div>
+
+                    <!-- Members Preview -->
+                    <div class="members-preview">
+                        <h4>Members:</h4>
+                        <div class="members-list">
+                            <% if (data.members.length> 0) { %>
+                                <% data.members.slice(0, 3).forEach(function(member) { %>
+                                    <div class="member-tag">
+                                        <span class="member-avatar">
+                                            <%= member.fullName.charAt(0).toUpperCase() %>
+                                        </span>
+                                        <span>
+                                            <%= member.fullName %>
+                                        </span>
+                                    </div>
+                                    <% }); %>
+                                        <% if (data.members.length> 3) { %>
+                                            <span class="more-members">+<%= data.members.length - 3 %> more</span>
+                                            <% } %>
+                                                <% } else { %>
+                                                    <p class="no-members-text">No members yet</p>
+                                                    <% } %>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="village-actions">
+                        <a href="/villages/<%= data.village._id %>/details" class="btn btn-primary">
+                            ℹ️ View Details
+                        </a>
+                        <a href="/villages/<%= data.village._id %>/posts" class="btn btn-secondary">
+                            📰 View Posts
+                        </a>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+
+        <% if (villagesWithData.length===0) { %>
+            <div class="no-villages">
+                <p>No villages found.</p>
+            </div>
+            <% } %>
+    </div>
+
+    <style>
+        .all-villages-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #718096;
+        }
+
+        .villages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .village-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .village-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .village-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .village-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .village-title h2 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .village-desc {
+            color: #718096;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .village-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #718096;
+        }
+
+        .members-preview {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .members-preview h4 {
+            font-size: 1rem;
+            color: #2d3748;
+            margin-bottom: 0.8rem;
+        }
+
+        .members-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .member-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.5rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .member-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .more-members {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .no-members-text {
+            color: #a0aec0;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .village-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+        }
+
+        .no-villages {
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 20px;
+            color: #a0aec0;
+        }
+
+        @media (max-width: 768px) {
+            .villages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .village-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .village-actions {
+                flex-direction: column;
+            }
+        }
+    </style>

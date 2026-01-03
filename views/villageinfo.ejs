@@ -1,0 +1,491 @@
+<!-- village-details.ejs -->
+<div class="village-details-container">
+    <!-- Village Header Section -->
+    <div class="village-header">
+        <div class="village-header-content">
+            <h1 class="village-name">
+                <%= village.name %>
+            </h1>
+            <p class="village-description">
+                <%= village.description || 'No description available' %>
+            </p>
+
+            <div class="village-meta">
+                <div class="meta-item">
+                    <span class="meta-icon">📍</span>
+                    <span class="meta-label">Location:</span>
+                    <span class="meta-value">
+                        <%= village.location || 'Not specified' %>
+                    </span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-icon">👤</span>
+                    <span class="meta-label">Lagion:</span>
+                    <span class="meta-value">
+                        <%= village.lagion ? village.lagion.fullName : 'No Lagion assigned' %>
+                    </span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-icon">📅</span>
+                    <span class="meta-label">Created:</span>
+                    <span class="meta-value">
+                        <%= new Date(village.createdAt).toLocaleDateString() %>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-section">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-number">
+                <%= members.length %>
+            </div>
+            <div class="stat-label">Members</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <div class="stat-number">
+                <%= postCount %>
+            </div>
+            <div class="stat-label">Posts</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-number">
+                <%= village.rating || 'N/A' %>
+            </div>
+            <div class="stat-label">Rating</div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="/villages/<%= village._id %>/posts" class="btn btn-primary">
+            <span class="btn-icon">📰</span>
+            View All Posts
+        </a>
+
+        <% if (currentUser && currentUser.role==='lagion' ) { %>
+            <a href="/<%= village._id %>/create-post" class="btn btn-success">
+                <span class="btn-icon">✍️</span>
+                Create New Post
+            </a>
+            <% } %>
+
+                <a href="/villages/all" class="btn btn-secondary">
+                    <span class="btn-icon">🏘️</span>
+                    Back to Villages
+                </a>
+    </div>
+
+    <!-- Lagion Information -->
+    <% if (village.lagion) { %>
+        <div class="section-card">
+            <h2 class="section-title">
+                <span class="title-icon">👨‍💼</span>
+                Lagion Information
+            </h2>
+            <div class="lagion-info">
+                <div class="info-row">
+                    <span class="info-label">Full Name:</span>
+                    <span class="info-value">
+                        <%= village.lagion.fullName %>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Username:</span>
+                    <span class="info-value">@<%= village.lagion.username %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">
+                        <%= village.lagion.email %>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+            <!-- Members Section -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <span class="title-icon">👥</span>
+                    Village Members (<%= members.length %>)
+                </h2>
+
+                <% if (members.length> 0) { %>
+                    <div class="members-grid">
+                        <% members.forEach(function(member) { %>
+                            <div class="member-card">
+                                <div class="member-avatar">
+                                    <%= member.fullName.charAt(0).toUpperCase() %>
+                                </div>
+                                <div class="member-info">
+                                    <h3 class="member-name">
+                                        <%= member.fullName %>
+                                    </h3>
+                                    <p class="member-username">@<%= member.username %>
+                                    </p>
+                                    <p class="member-email">
+                                        <%= member.email %>
+                                    </p>
+                                    <% if (member.phoneNumber) { %>
+                                        <p class="member-phone">📱 <%= member.phoneNumber %>
+                                        </p>
+                                        <% } %>
+                                            <p class="member-joined">
+                                                Joined: <%= new Date(member.createdAt).toLocaleDateString() %>
+                                            </p>
+
+                                            <!-- ⭐ YEH HAI NAYA MESSAGE BUTTON ⭐ -->
+                                            <% if (currentUser && currentUser._id.toString() !==member._id.toString()) {
+                                                %>
+                                                <a href="/chat/<%= member._id %>" class="btn-message">
+                                                    💬 Message
+                                                </a>
+                                                <% } %>
+                                </div>
+                            </div>
+                            <% }); %>
+                    </div>
+                    <% } else { %>
+                        <div class="empty-state">
+                            <div class="empty-icon">👥</div>
+                            <p class="empty-text">No members in this village yet.</p>
+                        </div>
+                        <% } %>
+            </div>
+</div>
+
+<style>
+    .village-details-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .village-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .village-name {
+        font-size: 2.5em;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .village-description {
+        font-size: 1.1em;
+        line-height: 1.6;
+        margin-bottom: 25px;
+        opacity: 0.95;
+    }
+
+    .village-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 8px;
+        backdrop-filter: blur(10px);
+    }
+
+    .meta-icon {
+        font-size: 1.2em;
+    }
+
+    .meta-label {
+        font-weight: 600;
+    }
+
+    .meta-value {
+        opacity: 0.95;
+    }
+
+    .stats-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon {
+        font-size: 3em;
+        margin-bottom: 10px;
+    }
+
+    .stat-number {
+        font-size: 2.5em;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #666;
+        font-size: 1.1em;
+        font-weight: 500;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+    }
+
+    .btn-icon {
+        font-size: 1.2em;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        color: white;
+    }
+
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(86, 171, 47, 0.4);
+    }
+
+    .btn-secondary {
+        background: #f5f5f5;
+        color: #333;
+    }
+
+    .btn-secondary:hover {
+        background: #e0e0e0;
+        transform: translateY(-2px);
+    }
+
+    .section-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+        font-size: 1.8em;
+        color: #333;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 10px;
+    }
+
+    .title-icon {
+        font-size: 1.2em;
+    }
+
+    .lagion-info {
+        display: grid;
+        gap: 15px;
+    }
+
+    .info-row {
+        display: flex;
+        padding: 12px;
+        background: #f9f9f9;
+        border-radius: 8px;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #667eea;
+        min-width: 120px;
+    }
+
+    .info-value {
+        color: #333;
+    }
+
+    .members-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .member-card {
+        display: flex;
+        gap: 15px;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .member-card:hover {
+        background: white;
+        border-color: #667eea;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    .member-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8em;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .member-info {
+        flex: 1;
+    }
+
+    .member-name {
+        font-size: 1.2em;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .member-username {
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .member-email,
+    .member-phone,
+    .member-joined {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 3px;
+    }
+
+    /* ⭐ YEH HAI NAYA CSS FOR MESSAGE BUTTON ⭐ */
+    .btn-message {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 0.9em;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-message:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .empty-icon {
+        font-size: 5em;
+        margin-bottom: 20px;
+        opacity: 0.3;
+    }
+
+    .empty-text {
+        font-size: 1.2em;
+        color: #999;
+    }
+
+    @media (max-width: 768px) {
+        .village-header {
+            padding: 25px;
+        }
+
+        .village-name {
+            font-size: 1.8em;
+        }
+
+        .village-meta {
+            flex-direction: column;
+        }
+
+        .stats-section {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .members-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-message {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>

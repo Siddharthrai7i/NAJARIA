@@ -1,0 +1,215 @@
+<% layout('boilerplate') -%>
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Welcome to Our Village Community</h1>
+                <p class="hero-subtitle">Connect, Communicate, and Collaborate with Your Neighbors</p>
+                <p class="hero-description">
+                    A digital platform bringing our village together. Share announcements, discuss important matters,
+                    resolve conflicts peacefully, and strengthen our community bonds.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn-hero-primary" onclick="window.location.href='/posts'">
+                        Start Discussing
+                    </button>
+                    <button class="btn-hero-secondary" onclick="window.location.href='/villages/all'">
+                        View All Villages
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-illustration">
+                    <div class="illustration-circle">🏘️</div>
+                    <div class="floating-icon icon-1">💬</div>
+                    <div class="floating-icon icon-2">📢</div>
+                    <div class="floating-icon icon-3">🤝</div>
+                    <div class="floating-icon icon-4">👥</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-header">
+            <h2 class="section-title">What Makes Us Special</h2>
+            <p class="section-subtitle">Everything you need to stay connected with your village community</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3 class="feature-title">Open Discussions</h3>
+                <p class="feature-description">
+                    Engage in meaningful conversations about village matters. Share your thoughts,
+                    ask questions, and collaborate with fellow villagers.
+                </p>
+                <a href="/posts" class="feature-link">Join Discussions →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📢</div>
+                <h3 class="feature-title">Village Posts</h3>
+                <p class="feature-description">
+                    Stay updated with important village news, events, and announcements.
+                    Never miss what's happening in your community.
+                </p>
+                <a href="/posts" class="feature-link">View Updates →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚖️</div>
+                <h3 class="feature-title">Community Support</h3>
+                <p class="feature-description">
+                    Address disputes peacefully with community support. Find fair solutions
+                    through transparent dialogue and mutual understanding.
+                </p>
+                <a href="/villages/my-village" class="feature-link">Visit Community →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3 class="feature-title">Community Members</h3>
+                <p class="feature-description">
+                    Connect with neighbors, discover local talents, and build stronger
+                    relationships within our village community.
+                </p>
+                <a href="/villages/my-village" class="feature-link">Meet Members →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3 class="feature-title">All Villages</h3>
+                <p class="feature-description">
+                    Explore other villages, see their activities, and connect with communities
+                    across different regions.
+                </p>
+                <a href="/villages/all" class="feature-link">Explore Villages →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <h3 class="feature-title">Direct Messaging</h3>
+                <p class="feature-description">
+                    Send private messages to your village members. Stay connected with
+                    your neighbors through secure messaging.
+                </p>
+                <a href="/messages" class="feature-link">Send Messages →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Active Members</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1,200+</div>
+                <div class="stat-label">Discussions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">350+</div>
+                <div class="stat-label">Issues Resolved</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Events Organized</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Activity Section -->
+    <section class="activity-section">
+        <div class="section-header">
+            <h2 class="section-title">Recent Community Activity</h2>
+            <p class="section-subtitle">See what's happening in our village</p>
+        </div>
+
+        <div class="activity-grid">
+            <!-- Recent Discussions -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <h3 class="activity-title">💬 Latest Discussions</h3>
+                    <a href="/posts" class="activity-view-all">View All</a>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-avatar">👤</div>
+                        <div class="activity-content">
+                            <h4 class="activity-item-title">Water Supply Schedule Discussion</h4>
+                            <p class="activity-meta">By Ram Kumar • 2 hours ago • 15 replies</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-avatar">👤</div>
+                        <div class="activity-content">
+                            <h4 class="activity-item-title">Street Light Repair Updates</h4>
+                            <p class="activity-meta">By Priya Singh • 5 hours ago • 8 replies</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-avatar">👤</div>
+                        <div class="activity-content">
+                            <h4 class="activity-item-title">Community Garden Proposal</h4>
+                            <p class="activity-meta">By Amit Patel • 1 day ago • 23 replies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Announcements -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <h3 class="activity-title">📢 Recent Posts</h3>
+                    <a href="/posts" class="activity-view-all">View All</a>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-avatar">📣</div>
+                        <div class="activity-content">
+                            <h4 class="activity-item-title">Village Festival on December 31st</h4>
+                            <p class="activity-meta">By Village Head • Today</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-avatar">📣</div>
+                        <div class="activity-content">
+                            <h4 class="activity-item-title">Road Maintenance Notice</h4>
+                            <p class="activity-meta">By Admin • Yesterday</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-avatar">📣</div>
+                        <div class="activity-content">
+                            <h4 class="activity-item-title">Community Meeting Schedule</h4>
+                            <p class="activity-meta">By Secretary • 2 days ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to Join the Conversation?</h2>
+            <p class="cta-description">
+                Be an active part of our village community. Share your ideas, voice your concerns,
+                and help build a better tomorrow together.
+            </p>
+            <div class="cta-buttons">
+                <button class="btn-cta-primary" onclick="window.location.href='/signup'">
+                    Create Account
+                </button>
+                <button class="btn-cta-secondary" onclick="window.location.href='/login'">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </section>
+
+    

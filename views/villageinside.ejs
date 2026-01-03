@@ -1,0 +1,229 @@
+<%- layout('boilerplate.ejs') %>
+
+    <div class="posts-container">
+        <!-- Header -->
+        <div class="posts-header">
+            <div class="back-nav">
+                <a href="/villages/all" class="back-btn">
+                    <span>←</span> Back to All Villages
+                </a>
+            </div>
+            <div class="page-title">
+                <h1>📰 <%= village.name %> - Village Posts</h1>
+                <% if (!isMember) { %>
+                    <p class="read-only-notice">👁️ You are viewing this as a visitor (read-only mode)</p>
+                    <% } %>
+            </div>
+        </div>
+
+        <!-- Posts List -->
+        <% if (posts && posts.length> 0) { %>
+            <% posts.forEach(function(post) { %>
+                <div class="post-card">
+                    <div class="post-header">
+                        <h2 class="post-title">
+                            <%= post.title %>
+                        </h2>
+
+                        <div class="post-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">👤</span>
+                                <span><strong>
+                                        <%= post.author.fullName %>
+                                    </strong></span>
+                                <span class="meta-username">@<%= post.author.username %></span>
+                            </div>
+
+                            <div class="meta-item">
+                                <span class="meta-icon">📅</span>
+                                <span>
+                                    <%= new Date(post.createdAt).toLocaleDateString('en-IN', { year: 'numeric' ,
+                                        month: 'long' , day: 'numeric' }) %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-content">
+                        <p>
+                            <%= post.content %>
+                        </p>
+                    </div>
+
+                    <div class="post-footer">
+                        <span class="comment-count">💬 <%= post.comments.length %> Comments</span>
+                        <a href="/villages/<%= village._id %>/post/<%= post._id %>" class="view-details-btn">
+                            View Full Post →
+                        </a>
+                    </div>
+                </div>
+                <% }); %>
+                    <% } else { %>
+                        <div class="no-posts">
+                            <p>📝 No posts available in this village yet.</p>
+                        </div>
+                        <% } %>
+    </div>
+
+    <style>
+        .posts-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .posts-header {
+            margin-bottom: 30px;
+        }
+
+        .back-nav {
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .page-title h1 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .read-only-notice {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .post-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            transition: transform 0.3s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .post-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .post-title {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .post-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-icon {
+            font-size: 16px;
+        }
+
+        .meta-username {
+            color: #667eea;
+        }
+
+        .post-content {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .comment-count {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .view-details-btn {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .view-details-btn:hover {
+            color: #5568d3;
+            text-decoration: underline;
+        }
+
+        .no-posts {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-posts p {
+            font-size: 18px;
+            color: #a0aec0;
+        }
+
+        @media (max-width: 768px) {
+            .posts-container {
+                padding: 15px;
+            }
+
+            .post-card {
+                padding: 20px;
+            }
+
+            .post-title {
+                font-size: 20px;
+            }
+
+            .post-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>

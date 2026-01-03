@@ -1,0 +1,428 @@
+<!-- Navbar Styles -->
+<style>
+    /* Navbar Container */
+    .village-navbar {
+        background: linear-gradient(135deg, #6c5ce7 0%, #a55eea 100%);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Brand */
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+    }
+
+    .brand-icon {
+        font-size: 2rem;
+    }
+
+    .brand-title {
+        margin: 0;
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .brand-subtitle {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
+    }
+
+    /* Navbar Menu */
+    .navbar-menu {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .navbar-links {
+        display: flex;
+        list-style: none;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-item {
+        position: relative;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .nav-icon {
+        font-size: 1.25rem;
+    }
+
+    /* Navbar User Dropdown */
+    .navbar-user {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar-user:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+    }
+
+    .user-dropdown {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .user-dropdown-name {
+        font-weight: 500;
+        color: #fff;
+        font-size: 14px;
+    }
+
+    .user-dropdown-icon {
+        font-size: 12px;
+        color: #fff;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-user:hover .user-dropdown-icon {
+        transform: rotate(180deg);
+    }
+
+    /* Dropdown Menu */
+    .user-dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 8px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .user-dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+        font-size: 14px;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f5f5f5;
+    }
+
+    .dropdown-item.logout {
+        color: #e74c3c;
+    }
+
+    .dropdown-item.logout:hover {
+        background-color: #fee;
+    }
+
+    .dropdown-item span {
+        font-size: 16px;
+    }
+
+    .dropdown-divider {
+        margin: 8px 0;
+        border: none;
+        border-top: 1px solid #eee;
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+    }
+
+    .hamburger-line {
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .mobile-menu-toggle {
+            display: flex;
+        }
+
+        .navbar-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #6c5ce7;
+            flex-direction: column;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .navbar-menu.active {
+            max-height: 500px;
+        }
+
+        .navbar-links {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .nav-item {
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link {
+            padding: 15px 20px;
+            width: 100%;
+        }
+
+        .navbar-actions {
+            width: 100%;
+            padding: 15px 20px;
+        }
+
+        .navbar-user {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .user-dropdown-menu {
+            position: static;
+            margin-top: 10px;
+            box-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    }
+</style>
+
+<!-- Navbar HTML -->
+<nav class="village-navbar">
+    <div class="navbar-container">
+        <!-- Brand -->
+        <div class="navbar-brand">
+            <div class="brand-icon">🏘️</div>
+            <div class="brand-text">
+                <h2 class="brand-title">Village Connect</h2>
+                <span class="brand-subtitle">Community Hub</span>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <!-- Navigation Menu -->
+        <div class="navbar-menu" id="navbarMenu">
+            <ul class="navbar-links">
+                <!-- Home -->
+                <!-- <li class="nav-item">
+                    <a href="/" class="nav-link">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Home</span>
+                    </a>
+                </li> -->
+
+                <% if (currentUser) { %>
+                    <!-- My Village (Only for logged in users) -->
+                    <li class="nav-item">
+                        <a href="/villages/my-village" class="nav-link">
+                            <span class="nav-icon">🏘️</span>
+                            <span class="nav-text">My Village</span>
+                        </a>
+                    </li>
+
+                    <!-- All Posts (Only for logged in users) -->
+                    <li class="nav-item">
+                        <a href="/posts" class="nav-link">
+                            <span class="nav-icon">📝</span>
+                            <span class="nav-text">Posts</span>
+                        </a>
+                    </li>
+
+                    <!-- Messages (Only for logged in users) -->
+                    <li class="nav-item">
+                        <a href="/messages" class="nav-link">
+                            <span class="nav-icon">💬</span>
+                            <span class="nav-text">Messages</span>
+                        </a>
+                    </li>
+                    <% } %>
+
+                        <!-- All Villages (Available for everyone) -->
+                        <li class="nav-item">
+                            <a href="/villages/all" class="nav-link">
+                                <span class="nav-icon">🗺️</span>
+                                <span class="nav-text">All Villages</span>
+                            </a>
+                        </li>
+            </ul>
+
+            <!-- Action Buttons / User Profile -->
+            <div class="navbar-actions">
+                <% if (!currentUser) { %>
+                    <!-- Not Logged In - Dropdown for Login/Signup -->
+                    <div class="navbar-user">
+                        <img src="https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-File.png"
+                            alt="Guest User" class="nav-user-avatar">
+                        <div class="user-dropdown">
+                            <span class="user-dropdown-name">Guest</span>
+                            <span class="user-dropdown-icon">▼</span>
+                        </div>
+
+                        <!-- Dropdown Menu for Non-Logged In -->
+                        <div class="user-dropdown-menu">
+                            <a href="/login" class="dropdown-item">
+                                <span>🔑</span> Login
+                            </a>
+                            <a href="/signup" class="dropdown-item">
+                                <span>✍️</span> Sign Up
+                            </a>
+                        </div>
+                    </div>
+                    <% } else { %>
+                        <!-- Logged In User - Dropdown -->
+                        <div class="navbar-user">
+                            <img src="<%= currentUser.avatar || 'https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-File.png' %>"
+                                alt="<%= currentUser.fullName %>" class="nav-user-avatar">
+                            <div class="user-dropdown">
+                                <span class="user-dropdown-name">
+                                    <%= currentUser.fullName %>
+                                </span>
+                                <span class="user-dropdown-icon">▼</span>
+                            </div>
+
+                            <!-- Dropdown Menu for Logged In -->
+                            <div class="user-dropdown-menu">
+                                <a href="/villages/my-village" class="dropdown-item">
+                                    <span>🏘️</span> My Village
+                                </a>
+                                <a href="/posts" class="dropdown-item">
+                                    <span>📝</span> My Posts
+                                </a>
+                                <a href="/messages" class="dropdown-item">
+                                    <span>💬</span> Messages
+                                </a>
+                                <hr class="dropdown-divider">
+                                <a href="/logout" class="dropdown-item logout">
+                                    <span>🚪</span> Logout
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Navbar JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navbarUser = document.querySelector('.navbar-user');
+        const dropdownMenu = document.querySelector('.user-dropdown-menu');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navbarMenu = document.getElementById('navbarMenu');
+
+        // Toggle user dropdown on click
+        if (navbarUser && dropdownMenu) {
+            navbarUser.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!navbarUser.contains(e.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        }
+
+        // Mobile menu toggle
+        if (mobileMenuToggle && navbarMenu) {
+            mobileMenuToggle.addEventListener('click', function () {
+                navbarMenu.classList.toggle('active');
+                this.classList.toggle('active');
+            });
+        }
+    });
+</script>

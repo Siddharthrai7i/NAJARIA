@@ -1,0 +1,130 @@
+/* ========================================
+   Error Page Styles
+   File: public/css/error.css
+   ======================================== */
+
+.error-page {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.error-container {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.error-icon {
+    font-size: 6rem;
+    color: #e74c3c;
+    margin-bottom: 30px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.error-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-shadow: none;
+}
+
+.error-message {
+    font-size: 1.3rem;
+    color: #34495e;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    padding: 20px;
+    background: rgba(52, 73, 94, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(52, 73, 94, 0.1);
+}
+
+.error-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary-custom,
+.btn-secondary-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-primary-custom {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    color: white;
+}
+
+.btn-secondary-custom {
+    background: rgba(52, 73, 94, 0.1);
+    color: #2c3e50;
+    border: 2px solid rgba(52, 73, 94, 0.3);
+}
+
+.btn-secondary-custom:hover {
+    background: rgba(52, 73, 94, 0.2);
+    border-color: rgba(52, 73, 94, 0.5);
+    transform: translateY(-2px);
+    color: #2c3e50;
+}
+
+/* Responsive Styles */
+@media (max-width: 576px) {
+    .error-icon {
+        font-size: 4rem;
+    }
+
+    .error-title {
+        font-size: 2rem;
+    }
+
+    .error-message {
+        font-size: 1.1rem;
+        padding: 15px;
+    }
+
+    .error-actions {
+        flex-direction: column;
+    }
+
+    .btn-primary-custom,
+    .btn-secondary-custom {
+        width: 100%;
+        justify-content: center;
+    }
+}
