@@ -9,6 +9,7 @@ const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
+const MongoStore = require('connect-mongo');
 require('dotenv').config();
 
 const MONGO_URL = process.env.MONGODB_URI ;
@@ -49,6 +50,10 @@ app.use(cookieParser());
 
 // Session Configuration
 const sessionConfig = {
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        touchAfter: 24 * 3600 
+    }),
     secret: process.env.SESSION_SECRET ,
     resave: false,
     saveUninitialized: false,
