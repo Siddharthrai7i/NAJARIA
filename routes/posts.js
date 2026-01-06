@@ -89,7 +89,7 @@ router.get('/:id', isLoggedIn, async (req, res) => {
             .populate('author', 'fullName username email')
             .populate('comments.user', 'fullName username')
             .populate('village', 'name');
-
+            
         if (!post) {
             req.flash('error', 'Post not found');
             return res.redirect('/villages/my-village');
@@ -163,11 +163,11 @@ router.delete('/:id', isLoggedIn, async (req, res) => {
 
         await Post.findByIdAndDelete(id);
         req.flash('success', 'Post deleted successfully');
-        res.redirect('/villages/my-village');
+        res.redirect('/posts');
     } catch (error) {
         console.error('Error deleting post:', error);
         req.flash('error', 'Error deleting post');
-        res.redirect('/villages/my-village');
+        res.redirect('/posts');
     }
 });
 
