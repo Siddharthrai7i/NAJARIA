@@ -49,12 +49,12 @@ app.use(cookieParser());
 
 // Session Configuration
 const sessionConfig = {
-    secret: process.env.SESSION_SECRET || 'mysecretcode',
+    secret: process.env.SESSION_SECRET ,
     resave: false,
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV ,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
