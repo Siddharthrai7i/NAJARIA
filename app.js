@@ -52,9 +52,9 @@ app.use(cookieParser());
 const sessionConfig = {
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
-        touchAfter: 24 * 3600 
+        touchAfter: 24 * 3600
     }),
-    secret: process.env.SESSION_SECRET ,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
