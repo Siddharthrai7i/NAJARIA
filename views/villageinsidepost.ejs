@@ -6,6 +6,7 @@
                 <span>←</span> Back to Village Posts
             </a>
         </div>
+
         <% if (!isMember) { %>
             <div class="visitor-notice">
                 <span>👁️</span>
@@ -60,6 +61,13 @@
                         <p>
                             <%= posts.content %>
                         </p>
+
+                        <!-- Image Display -->
+                        <% if (posts.image) { %>
+                            <div class="post-image-container">
+                                <img src="<%= posts.image %>" alt="<%= posts.title %>" class="post-image">
+                            </div>
+                            <% } %>
                     </div>
                 </div>
 
@@ -70,8 +78,8 @@
 
                     <% if (!isMember) { %>
                         <div class="comment-restriction-notice">
-                            <p>🔒 Only village members can add comments. Join <%= posts.village.name %> to participate in
-                                    discussions!</p>
+                            <p>🔒 Only village members can add comments. Join <%= posts.village.name %> to participate
+                                    in discussions!</p>
                         </div>
                         <% } %>
 
@@ -217,6 +225,33 @@
             color: #4a5568;
         }
 
+        .post-content p {
+            margin-bottom: 20px;
+        }
+
+        /* Image Display Styles */
+        .post-image-container {
+            margin-top: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-image {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: cover;
+            display: block;
+            border-radius: 15px;
+            transition: transform 0.4s ease;
+            cursor: pointer;
+        }
+
+        .post-image:hover {
+            transform: scale(1.02);
+        }
+
         .comments-section {
             background: white;
             padding: 30px;
@@ -329,6 +364,10 @@
 
             .comments-section {
                 padding: 20px;
+            }
+
+            .post-image {
+                max-height: 400px;
             }
         }
     </style>

@@ -49,6 +49,14 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
+        .post-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
         .post-title {
             font-size: 1.5rem;
             color: #2c3e50;
@@ -137,7 +145,7 @@
             <% posts.forEach(post=> { %>
                 <div class="post-card">
                     <h2 class="post-title">
-                        <a href="/village/post/<%= post._id %>">
+                        <a href="/posts/<%= post._id %>">
                             <%= post.title %>
                         </a>
                     </h2>
@@ -154,21 +162,25 @@
                         </span>
                     </div>
 
-                    <div class="post-content">
-                        <%= post.content %>
-                    </div>
+                    <% if (post.image) { %>
+                        <img src="<%= post.image %>" alt="<%= post.title %>" class="post-image">
+                        <% } %>
 
-                    <div class="post-footer">
-                        <div class="post-stats">
-                            <span>
-                                <i class="fas fa-comments"></i>
-                                <%= post.comments.length %> Comments
-                            </span>
-                        </div>
-                        <a href="/posts/<%= post._id %>" class="btn-view">
-                            Read More <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
+                            <div class="post-content">
+                                <%= post.content %>
+                            </div>
+
+                            <div class="post-footer">
+                                <div class="post-stats">
+                                    <span>
+                                        <i class="fas fa-comments"></i>
+                                        <%= post.comments.length %> Comments
+                                    </span>
+                                </div>
+                                <a href="/posts/<%= post._id %>" class="btn-view">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
                 </div>
                 <% }); %>
                     <% } else { %>
@@ -177,9 +189,9 @@
                             <h2>No Posts Yet</h2>
                             <p>Be the first to share something with your village!</p>
                             <br>
-                            <a href="/new" class="btn-create">
+                            <a href="/posts/new" class="btn-create">
                                 <i class="fas fa-plus"></i> Create First Post
                             </a>
                         </div>
-                <% } %>
+                        <% } %>
     </div>

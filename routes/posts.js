@@ -1,9 +1,37 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 const { isLoggedIn } = require('../middleware.js');
 const User = require('../models/users');
 const Village = require('../models/village.js');
 const Post = require('../models/posts.js');
+
+// Multer Configuration for Image Upload
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/posts'); // Make sure this folder exists
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, 'post-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    // Accept images only
+    if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+    } else {
+        cb(new Error('Only image files are allowed!'), false);
+    }
+};
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+});
 
 // Get all posts of logged-in user's village (Home page after login)
 router.get('/', isLoggedIn, async (req, res) => {
@@ -48,8 +76,8 @@ router.get('/new', isLoggedIn, async (req, res) => {
     }
 });
 
-// Create New Post
-router.post('/', isLoggedIn, async (req, res) => {
+// Create New Post (with optional image)
+router.post('/', isLoggedIn, upload.single('image'), async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
         if (!user || !user.village) {
@@ -58,12 +86,21 @@ router.post('/', isLoggedIn, async (req, res) => {
         }
 
         const { title, content } = req.body;
-        const newPost = new Post({
+        
+        // Create post object
+        const postData = {
             title: title,
             content: content,
             author: req.user._id,
             village: user.village
-        });
+        };
+
+        // Add image path if uploaded
+        if (req.file) {
+            postData.image = '/uploads/posts/' + req.file.filename;
+        }
+
+        const newPost = new Post(postData);
 
         await newPost.save();
         await Village.findByIdAndUpdate(

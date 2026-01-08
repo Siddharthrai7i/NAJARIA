@@ -55,6 +55,82 @@
             resize: vertical;
         }
 
+        .image-upload-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            background: #f9f9f9;
+        }
+
+        .upload-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .upload-label:hover {
+            background: #5568d3;
+        }
+
+        .upload-label i {
+            margin-right: 8px;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        .image-preview-container {
+            margin-top: 15px;
+            display: none;
+            position: relative;
+        }
+
+        .image-preview-container.active {
+            display: block;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .remove-image-btn:hover {
+            background: #c0392b;
+        }
+
+        .upload-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
         .btn-submit {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -87,7 +163,7 @@
                 </p>
             </div>
 
-            <form action="/posts" method="POST">
+            <form action="/posts" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title" class="form-label">
                         <i class="fas fa-heading"></i> Title
@@ -104,6 +180,24 @@
                         placeholder="Write your post content here..." required></textarea>
                 </div>
 
+                <!-- Image Upload Section -->
+                <div class="image-upload-section">
+                    <label for="imageInput" class="upload-label">
+                        <i class="fas fa-camera"></i> Add Image (Optional)
+                    </label>
+                    <input type="file" id="imageInput" name="image" accept="image/*">
+                    <p class="upload-info">
+                        <i class="fas fa-info-circle"></i> Max size: 5MB | Formats: JPG, PNG, GIF
+                    </p>
+
+                    <div class="image-preview-container" id="imagePreview">
+                        <button type="button" class="remove-image-btn" id="removeImageBtn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <img src="" alt="Preview" class="preview-image" id="previewImg">
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-submit">
                     <i class="fas fa-paper-plane"></i> Post
                 </button>
@@ -114,3 +208,45 @@
             </form>
         </div>
     </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+
+        // Image Preview
+        imageInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+
+            if (file) {
+                // Check file size (5MB = 5 * 1024 * 1024 bytes)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB!');
+                    imageInput.value = '';
+                    return;
+                }
+
+                // Check file type
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file!');
+                    imageInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    imagePreview.classList.add('active');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove Image
+        removeImageBtn.addEventListener('click', function () {
+            imageInput.value = '';
+            previewImg.src = '';
+            imagePreview.classList.remove('active');
+        });
+    </script>

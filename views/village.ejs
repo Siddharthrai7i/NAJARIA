@@ -52,7 +52,6 @@
         <!-- Members List -->
         <div class="members-section">
             <h2 class="section-title">Village Members</h2>
-
             <% if (members.length===0) { %>
                 <div class="no-members">
                     <p>No members in this village yet.</p>
@@ -91,22 +90,20 @@
                     </div>
                     <% } %>
         </div>
-        <!-- Existing village info ke baad ye section add karo -->
-        
+
+        <!-- Posts Section -->
         <div class="posts-section" style="margin-top: 40px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2><i class="fas fa-newspaper"></i> Village Posts</h2>
-                <a href="/post/new" class="btn btn-primary">
+                <a href="/posts/new" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Create Post
                 </a>
             </div>
-        
+
             <% if (posts && posts.length> 0) { %>
                 <% posts.forEach(post=> { %>
-                    <div class="post-card"
-                        style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <div class="post-header"
-                            style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
+                    <div class="post-card">
+                        <div class="post-header">
                             <h3 style="margin: 0 0 10px 0;">
                                 <%= post.title %>
                             </h3>
@@ -120,32 +117,37 @@
                                 <% if (currentUser._id.toString()===post.author._id.toString()) { %>
                                     <form action="/posts/<%= post._id %>?_method=DELETE" method="POST"
                                         style="display: inline;">
-                                        <button type="submit"
-                                            style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                                        <button type="submit" class="delete-btn">
                                             <i class="fas fa-trash"></i> Delete
                                         </button>
                                     </form>
                                     <% } %>
                             </div>
                         </div>
-        
-                        <div class="post-content" style="margin-bottom: 20px;">
+
+                        <div class="post-content">
                             <p style="white-space: pre-wrap;">
                                 <%= post.content %>
                             </p>
+
+                            <!-- Image Display -->
+                            <% if (post.image) { %>
+                                <div class="post-image-container">
+                                    <img src="<%= post.image %>" alt="Post image" class="post-image">
+                                </div>
+                                <% } %>
                         </div>
-        
+
                         <!-- Comments Section -->
                         <div class="comments-section">
                             <h4 style="margin-bottom: 15px;">
                                 <i class="fas fa-comments"></i> Comments (<%= post.comments.length %>)
                             </h4>
-        
+
                             <% if (post.comments.length> 0) { %>
-                                <div class="comments-list" style="margin-bottom: 20px;">
+                                <div class="comments-list">
                                     <% post.comments.forEach(comment=> { %>
-                                        <div class="comment"
-                                            style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                                        <div class="comment">
                                             <strong>
                                                 <%= comment.user.fullName || comment.user.username %>:
                                             </strong>
@@ -156,14 +158,12 @@
                                         <% }); %>
                                 </div>
                                 <% } %>
-        
+
                                     <!-- Add Comment Form -->
-                                    <form action="/posts/<%= post._id %>/comment" method="POST"
-                                        style="display: flex; gap: 10px;">
+                                    <form action="/posts/<%= post._id %>/comment" method="POST" class="comment-form">
                                         <input type="text" name="content" placeholder="Add a comment..." required
-                                            style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                                        <button type="submit"
-                                            style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                                            class="comment-input">
+                                        <button type="submit" class="comment-btn">
                                             <i class="fas fa-paper-plane"></i> Comment
                                         </button>
                                     </form>
@@ -172,7 +172,8 @@
                     <% }); %>
                         <% } else { %>
                             <p style="text-align: center; color: #999; padding: 40px;">
-                                <i class="fas fa-inbox" style="font-size: 3rem; display: block; margin-bottom: 10px;"></i>
+                                <i class="fas fa-inbox"
+                                    style="font-size: 3rem; display: block; margin-bottom: 10px;"></i>
                                 No posts yet. Be the first to post!
                             </p>
                             <% } %>
@@ -247,15 +248,18 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease;
         }
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
+
         .stat-icon {
             font-size: 3rem;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .stat-info h3 {
             font-size: 2rem;
             margin: 0;
@@ -267,9 +271,11 @@
             color: #666;
             font-size: 0.9rem;
         }
+
         .members-section {
             margin-top: 3rem;
         }
+
         .section-title {
             font-size: 2rem;
             margin-bottom: 2rem;
@@ -278,15 +284,18 @@
             align-items: center;
             gap: 0.5rem;
         }
+
         .section-title::before {
             content: '👥';
             font-size: 2rem;
         }
+
         .members-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
         }
+
         .member-card {
             background: white;
             border-radius: 15px;
@@ -301,6 +310,7 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
             border-color: #667eea;
         }
+
         .member-avatar {
             width: 70px;
             height: 70px;
@@ -375,21 +385,138 @@
             border-radius: 15px;
             color: #666;
         }
+
+        /* Posts Section Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .post-content {
+            margin-bottom: 20px;
+        }
+
+        /* Image Display Styles */
+        .post-image-container {
+            margin-top: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
+            display: block;
+            border-radius: 12px;
+        }
+
+        .comments-section {
+            margin-top: 20px;
+        }
+
+        .comments-list {
+            margin-bottom: 20px;
+        }
+
+        .comment {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .comment-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .comment-btn:hover {
+            background: #5568d3;
+        }
+
         @media (max-width: 768px) {
             .village-header {
                 flex-direction: column;
                 text-align: center;
                 padding: 2rem;
             }
+
             .village-name {
                 font-size: 2rem;
             }
+
             .village-meta {
                 flex-direction: column;
                 gap: 0.5rem;
             }
+
             .members-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .post-image {
+                max-height: 300px;
             }
         }
     </style>
