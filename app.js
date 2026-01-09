@@ -70,6 +70,15 @@ app.use(flash());
 
 // JWT Authentication Middleware
 // JWT Authentication Middleware
+app.use((req, res, next) => {
+    console.log(`\n=== Route Hit ===`);
+    console.log(`Method: ${req.method}`);
+    console.log(`URL: ${req.url}`);
+    console.log(`Path: ${req.path}`);
+    console.log(`Original URL: ${req.originalUrl}`);
+    console.log(`================\n`);
+    next();
+});
 app.use(async (req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');

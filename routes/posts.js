@@ -125,6 +125,7 @@ router.get('/:id', isLoggedIn, async (req, res) => {
         const post = await Post.findById(id)
             .populate('author', 'fullName username email')
             .populate('comments.user', 'fullName username')
+            .populate('comments.replies.user', 'fullName username')
             .populate('village', 'name');
             
         if (!post) {
@@ -174,10 +175,134 @@ router.post('/:id/comment', isLoggedIn, async (req, res) => {
 
         await post.save();
         req.flash('success', 'Comment added!');
-        res.redirect('/villages/my-village');
+        res.redirect(`/posts/${id}`);
     } catch (error) {
         console.error('Error adding comment:', error);
         req.flash('error', 'Error adding comment');
+        res.redirect('/villages/my-village');
+    }
+});
+
+// Add Reply to Comment
+router.post('/:postId/comment/:commentId/reply', isLoggedIn, async (req, res) => {
+    try {
+        const { postId, commentId } = req.params;
+        const { content } = req.body;
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            req.flash('error', 'Post not found');
+            return res.redirect('/villages/my-village');
+        }
+
+        const user = await User.findById(req.user._id);
+        if (user.village.toString() !== post.village.toString()) {
+            req.flash('error', 'You can only reply to comments from your village');
+            return res.redirect('/villages/my-village');
+        }
+
+        // Find the comment
+        const comment = post.comments.id(commentId);
+        
+        if (!comment) {
+            req.flash('error', 'Comment not found');
+            return res.redirect(`/posts/${postId}`);
+        }
+
+        // Add reply to comment
+        comment.replies.push({
+            user: req.user._id,
+            content: content
+        });
+
+        await post.save();
+        req.flash('success', 'Reply added!');
+        res.redirect(`/posts/${postId}`);
+    } catch (error) {
+        console.error('Error adding reply:', error);
+        req.flash('error', 'Error adding reply');
+        res.redirect('/villages/my-village');
+    }
+});
+
+// Delete Comment
+router.delete('/:postId/comment/:commentId', isLoggedIn, async (req, res) => {
+    try {
+        const { postId, commentId } = req.params;
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            req.flash('error', 'Post not found');
+            return res.redirect('/villages/my-village');
+        }
+
+        // Find the comment
+        const comment = post.comments.id(commentId);
+        
+        if (!comment) {
+            req.flash('error', 'Comment not found');
+            return res.redirect(`/posts/${postId}`);
+        }
+
+        // Check if current user is the comment author
+        if (comment.user.toString() !== req.user._id.toString()) {
+            req.flash('error', 'You can only delete your own comments');
+            return res.redirect(`/posts/${postId}`);
+        }
+
+        // Remove comment using pull
+        post.comments.pull(commentId);
+        await post.save();
+
+        req.flash('success', 'Comment deleted successfully');
+        res.redirect(`/posts/${postId}`);
+    } catch (error) {
+        console.error('Error deleting comment:', error);
+        req.flash('error', 'Error deleting comment');
+        res.redirect('/villages/my-village');
+    }
+});
+
+// Delete Reply
+router.delete('/:postId/comment/:commentId/reply/:replyId', isLoggedIn, async (req, res) => {
+    try {
+        const { postId, commentId, replyId } = req.params;
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            req.flash('error', 'Post not found');
+            return res.redirect('/villages/my-village');
+        }
+
+        const comment = post.comments.id(commentId);
+        
+        if (!comment) {
+            req.flash('error', 'Comment not found');
+            return res.redirect(`/posts/${postId}`);
+        }
+
+        const reply = comment.replies.id(replyId);
+        
+        if (!reply) {
+            req.flash('error', 'Reply not found');
+            return res.redirect(`/posts/${postId}`);
+        }
+
+        // Check if current user is the reply author
+        if (reply.user.toString() !== req.user._id.toString()) {
+            req.flash('error', 'You can only delete your own replies');
+            return res.redirect(`/posts/${postId}`);
+        }
+
+        comment.replies.pull(replyId);
+        await post.save();
+
+        req.flash('success', 'Reply deleted successfully');
+        res.redirect(`/posts/${postId}`);
+    } catch (error) {
+        console.error('Error deleting reply:', error);
+        req.flash('error', 'Error deleting reply');
         res.redirect('/villages/my-village');
     }
 });

@@ -26,12 +26,15 @@ const PostSchema = new Schema({
         required: true
     },
     comments: [{
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        },
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    content: String,
+    createdAt: { type: Date, default: Date.now },
+    replies: [{ 
+        user: { type: Schema.Types.ObjectId, ref: 'User' },
         content: String,
+        createdAt: { type: Date, default: Date.now }
     }]
+}]
 }, {
     timestamps: true
 });

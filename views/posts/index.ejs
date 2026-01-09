@@ -1,71 +1,229 @@
 <% layout('boilerplate.ejs') -%>
 
+    <div class="posts-container">
+        <div class="posts-header">
+            <div class="header-content">
+                <h1>
+                    <i class="fas fa-newspaper"></i>
+                    <%= village.name %> Posts
+                </h1>
+                <p class="subtitle">Share and connect with your village community</p>
+            </div>
+            <a href="/posts/new" class="btn-create">
+                <i class="fas fa-plus"></i> Create Post
+            </a>
+        </div>
+
+        <% if (posts && posts.length> 0) { %>
+            <div class="posts-grid">
+                <% posts.forEach(post=> { %>
+                    <div class="post-card">
+                        <% if (post.image) { %>
+                            <div class="post-image-wrapper">
+                                <img src="<%= post.image %>" alt="<%= post.title %>" class="post-image">
+                            </div>
+                            <% } %>
+
+                                <div class="post-body">
+                                    <h2 class="post-title">
+                                        <a href="/posts/<%= post._id %>">
+                                            <%= post.title %>
+                                        </a>
+                                    </h2>
+
+                                    <div class="post-meta">
+                                        <div class="meta-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>
+                                                <%= post.author.fullName || post.author.username %>
+                                            </span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>
+                                                <%= new Date(post.createdAt).toLocaleDateString('en-IN', {
+                                                    year: 'numeric' , month: 'short' , day: 'numeric' }) %>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="post-content">
+                                        <%= post.content %>
+                                    </div>
+
+                                    <div class="post-footer">
+                                        <div class="post-stats">
+                                            <span class="stat-item">
+                                                <i class="fas fa-comments"></i>
+                                                <%= post.comments.length %>
+                                            </span>
+                                        </div>
+                                        <a href="/posts/<%= post._id %>" class="btn-view">
+                                            Read More <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                    </div>
+                    <% }); %>
+            </div>
+            <% } else { %>
+                <div class="no-posts">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h2>No Posts Yet</h2>
+                        <p>Be the first to share something with your village!</p>
+                        <a href="/posts/new" class="btn-create">
+                            <i class="fas fa-plus"></i> Create First Post
+                        </a>
+                    </div>
+                </div>
+                <% } %>
+    </div>
+
     <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
         .posts-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
         }
 
         .posts-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            animation: fadeInDown 0.5s ease;
         }
 
-        .posts-header h1 {
-            font-size: 2rem;
-            color: #2c3e50;
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-content h1 {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header-content h1 i {
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 15px;
+            margin: 0;
         }
 
         .btn-create {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: transform 0.2s;
+            gap: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-create:hover {
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
             color: white;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            animation: fadeInUp 0.6s ease;
         }
 
         .post-card {
             background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .post-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-image-wrapper {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #f7fafc;
         }
 
         .post-image {
             width: 100%;
-            max-height: 400px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .post-card:hover .post-image {
+            transform: scale(1.05);
+        }
+
+        .post-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .post-title {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            margin-bottom: 10px;
+            font-size: 20px;
+            margin-bottom: 12px;
+            line-height: 1.4;
         }
 
         .post-title a {
-            color: #2c3e50;
+            color: #2d3748;
             text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
         }
 
         .post-title a:hover {
@@ -74,16 +232,32 @@
 
         .post-meta {
             display: flex;
-            gap: 20px;
-            color: #666;
-            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 15px;
             margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .meta-item i {
+            color: #667eea;
+            font-size: 13px;
         }
 
         .post-content {
-            color: #555;
+            color: #4a5568;
             line-height: 1.6;
+            font-size: 15px;
             margin-bottom: 15px;
+            flex-grow: 1;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
@@ -95,103 +269,124 @@
             justify-content: space-between;
             align-items: center;
             padding-top: 15px;
-            border-top: 1px solid #eee;
+            border-top: 2px solid #f0f0f0;
+            margin-top: auto;
         }
 
         .post-stats {
             display: flex;
             gap: 15px;
-            font-size: 0.9rem;
-            color: #666;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .stat-item i {
+            color: #667eea;
         }
 
         .btn-view {
             background: #667eea;
             color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 9px 18px;
+            border-radius: 8px;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
         }
 
         .btn-view:hover {
             background: #5568d3;
             color: white;
+            transform: translateX(3px);
         }
 
         .no-posts {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
         }
 
-        .no-posts i {
-            font-size: 4rem;
+        .empty-state {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .empty-state i {
+            font-size: 80px;
+            color: #e2e8f0;
             margin-bottom: 20px;
-            color: #ddd;
+        }
+
+        .empty-state h2 {
+            font-size: 28px;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .empty-state p {
+            color: #718096;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .posts-container {
+                padding: 20px 15px;
+            }
+
+            .posts-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 25px 20px;
+            }
+
+            .header-content h1 {
+                font-size: 26px;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .post-image-wrapper {
+                height: 200px;
+            }
+
+            .empty-state {
+                padding: 40px 25px;
+            }
+
+            .empty-state i {
+                font-size: 60px;
+            }
+
+            .empty-state h2 {
+                font-size: 24px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .posts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
-    <div class="posts-container">
-        <div class="posts-header">
-            <h1><i class="fas fa-newspaper"></i>
-                <%= village.name %> Posts
-            </h1>
-            <a href="/posts/new" class="btn-create">
-                <i class="fas fa-plus"></i> Create Post
-            </a>
-        </div>
-
-        <% if (posts && posts.length> 0) { %>
-            <% posts.forEach(post=> { %>
-                <div class="post-card">
-                    <h2 class="post-title">
-                        <a href="/posts/<%= post._id %>">
-                            <%= post.title %>
-                        </a>
-                    </h2>
-
-                    <div class="post-meta">
-                        <span>
-                            <i class="fas fa-user"></i>
-                            <%= post.author.fullName || post.author.username %>
-                        </span>
-                        <span>
-                            <i class="fas fa-clock"></i>
-                            <%= new Date(post.createdAt).toLocaleDateString('en-IN', { year: 'numeric' , month: 'short'
-                                , day: 'numeric' }) %>
-                        </span>
-                    </div>
-
-                    <% if (post.image) { %>
-                        <img src="<%= post.image %>" alt="<%= post.title %>" class="post-image">
-                        <% } %>
-
-                            <div class="post-content">
-                                <%= post.content %>
-                            </div>
-
-                            <div class="post-footer">
-                                <div class="post-stats">
-                                    <span>
-                                        <i class="fas fa-comments"></i>
-                                        <%= post.comments.length %> Comments
-                                    </span>
-                                </div>
-                                <a href="/posts/<%= post._id %>" class="btn-view">
-                                    Read More <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                </div>
-                <% }); %>
-                    <% } else { %>
-                        <div class="no-posts">
-                            <i class="fas fa-inbox"></i>
-                            <h2>No Posts Yet</h2>
-                            <p>Be the first to share something with your village!</p>
-                            <br>
-                            <a href="/posts/new" class="btn-create">
-                                <i class="fas fa-plus"></i> Create First Post
-                            </a>
-                        </div>
-                        <% } %>
-    </div>
