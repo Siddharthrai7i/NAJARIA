@@ -1,7 +1,7 @@
 // utils/jwt.js
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET ;
 const JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
 
 function generateToken(userId) {
